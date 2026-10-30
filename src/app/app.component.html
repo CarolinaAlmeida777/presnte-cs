@@ -1,0 +1,711 @@
+<!-- <!-- <div class="stage">
+
+  <!-- ==========================================
+       VÍDEO DE FUNDO
+  =========================================== -->
+  <video
+     #bgVideo
+   class="bg-video"
+    src="assets/video/officewallpaper.mp4"
+    autoplay
+    muted
+    loop
+    playsinline>
+     <source src="assets/video/officewallpaper.mp4" type="video/mp4">
+  </video>
+
+  <!-- Escurece o vídeo para melhorar a leitura -->
+  <div class="bg-overlay"></div>
+    <!-- personagem no meio da tela inicial (animação em loop, sem fundo) -->
+   <!-- personagens da tela inicial (animações em loop, sem fundo): ao fundo, ao lado e a da frente -->
+  <ng-container *ngIf="page === 'home'">
+    
+    <img class="home-char home-char--side"  [src]="photoPath(homeChar2)" (error)="onImgError($event)" alt="" />
+    <img class="home-char home-char--front" [src]="photoPath(homeChar)"  (error)="onImgError($event)" alt="" />
+
+    <!-- cartão do jogador, entre os pés da personagem da frente -->
+    <div class="home-card">
+      <div class="home-card__name">
+        <svg class="home-card__logo" viewBox="0 0 24 24">
+          <path d="M12 1.5l9 4.5v9l-9 8-9-8V6z" fill="none" stroke="#fff" stroke-width="2"></path>
+          <path d="M12 6l5 3v5l-5 4-5-4V9z" fill="#fff"></path>
+        </svg>
+        <span>{{ playerCard.name }}</span>
+      </div>
+
+      <div class="home-card__box">
+        <img class="home-card__coin" [src]="photoPath(playerCard.coin)" (error)="onImgError($event)" alt="" />
+
+        <div class="home-card__avatar">
+          <img [src]="photoPath(playerCard.avatar)" (error)="onImgError($event)" alt="" />
+        </div>
+
+        <div class="home-card__line home-card__line--1"></div>
+
+        <svg class="home-card__rank" viewBox="0 0 40 72">
+          <path d="M2 2 L20 13 L38 2 L38 14 L20 25 L2 14Z" fill="#f7d768"></path>
+          <path d="M2 25 L20 36 L38 25 L38 37 L20 48 L2 37Z" fill="#edc04a"></path>
+          <path d="M2 48 L20 59 L38 48 L38 60 L20 71 L2 60Z" fill="#d9a22c"></path>
+        </svg>
+
+        <div class="home-card__bar">
+          <div class="home-card__fill" [style.width.%]="playerCard.xp"></div>
+        </div>
+
+        <div class="home-card__line home-card__line--2"></div>
+
+        <div class="home-card__tag"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+  </ng-container>
+
+
+  <!-- ==========================================
+       BARRA SUPERIOR
+  =========================================== -->
+<header class="topbar">
+
+  <div class="topbar__left">
+
+    <!-- HOME (azul) -->
+    <span class="top-icon top-icon--home" (click)="goTo('home')">
+      <svg viewBox="0 0 24 24">
+        <path d="M3 11.5L12 4l9 7.5"></path>
+        <path d="M5.5 10.5V20h13v-9.5"></path>
+        <path d="M9.5 20v-5h5v5"></path>
+      </svg>
+    </span>
+
+    <!-- TV (clique abre a música) -->
+    <span class="top-icon" [class.on]="tvOpen" (click)="toggleTv()" title="Música">
+      <svg viewBox="0 0 24 24">
+        <rect x="3" y="7" width="18" height="12" rx="1.5"></rect>
+        <path d="M8 3.5l4 3.5 4-3.5"></path>
+        <path d="M9 22h6"></path>
+      </svg>
+    </span>
+
+    <!-- CONFIGURAÇÕES (engrenagem) -->
+    <span class="top-icon">
+      <svg viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+      </svg>
+    </span>
+
+    <!-- DESLIGAR -->
+    <span class="top-icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 3v9"></path>
+        <path d="M7.5 5.5a8 8 0 1 0 9 0"></path>
+      </svg>
+    </span>
+
+  </div>
+
+  <nav class="topbar__nav">
+    <span [class.active]="page === 'inventory'" (click)="goTo('inventory')">INVENTÁRIO</span>
+    <i></i>
+    <span [class.active]="page === 'equipment'" (click)="goTo('equipment')">EQUIPAMENTO</span>
+    <i></i>
+    <span [class.active]="page === 'home'" (click)="onJogarClick()">JOGAR</span>
+    <i></i>
+    <span [class.active]="page === 'shop'" (click)="goTo('shop')">LOJA</span>
+    <i></i>
+    <span [class.active]="page === 'news'" (click)="goTo('news')">NOTÍCIAS</span>
+  </nav>
+
+</header>
+
+  <!-- ==========================================
+       PLAYER DA MÚSICA (ícone da TV)
+  =========================================== -->
+  <div class="tv-panel" *ngIf="tvOpen">
+    <div class="tv-panel__head">
+      <span>📺 {{ tvTitle }}</span>
+      <button type="button" (click)="closeTv()" aria-label="Fechar">✕</button>
+    </div>
+    <iframe *ngIf="tvUrl" [src]="tvUrl" title="Música"
+            allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+    <a class="tv-panel__link" [href]="tvLink" target="_blank" rel="noopener">Abrir no YouTube ↗</a>
+  </div>
+
+  <!-- ==========================================
+       COLUNA ESQUERDA
+  =========================================== -->
+  <aside class="left-col" *ngIf="page === 'home'">
+
+    <!-- CARD 1 -->
+    <div class="mission-banner">
+      <div class="mission-banner__title">{{ config.ribbonText }}</div>
+      <div class="mission-banner__sub">{{ config.bannerSub }}</div>
+    </div>
+
+    <div class="card card1">
+      <div class="card__art">
+        <span class="placeholder-icon">📷</span>
+        <img [src]="photoPath(config.heroPhoto)" (error)="onImgError($event)" alt="" />
+      </div>
+      <div class="card__shade"></div>
+      <div class="card__text card__text--bottom">
+        <div class="card__heading">{{ config.heroLabel }}</div>
+        <div class="card__desc">{{ config.heroSub }}</div>
+      </div>
+    </div>
+
+<!-- CARD 3: novidades (agora em segundo) -->
+<div class="card card3">
+  <div class="card__art">
+    <span class="placeholder-icon">📷</span>
+    <img [src]="photoPath(config.thirdPhoto)" (error)="onImgError($event)" alt="" />
+  </div>
+  <div class="card__shade"></div>
+
+  <div class="card__label">NOVIDADES E POPULARES</div>
+
+  <div class="card__text card__text--bottom">
+    <div class="card__title-small">{{ config.thirdLabel }}</div>
+    <div class="card__price">{{ config.thirdPrice }}</div>
+  </div>
+
+  <span class="card__info-icon">i</span>
+</div>
+
+
+<!-- CARD 2: carrossel (agora em terceiro) -->
+<div class="card card2">
+  <div
+    class="card__art"
+    *ngFor="let p of config.photos; let i = index"
+    [class.hidden]="i !== activePhoto">
+    <span class="placeholder-icon">📷</span>
+    <img [src]="photoPath(p)" (error)="onImgError($event)" alt="" />
+  </div>
+
+  <div class="card__shade card__shade--top"></div>
+  <div class="card__tag-new">NOVO!</div>
+
+  <div class="card__text card__text--top">
+    <div class="card__heading">{{ config.carouselTitle }}</div>
+    <div class="card__desc">{{ config.carouselSub }}</div>
+  </div>
+
+  <div class="card__pager">
+    <button class="arrow" (click)="prevPhoto()">◀</button>
+    <div class="dots">
+      <span
+        *ngFor="let p of config.photos; let i = index"
+        [class.active]="i === activePhoto"
+        (click)="selectPhoto(i)"></span>
+    </div>
+    <button class="arrow" (click)="nextPhoto()">▶</button>
+  </div>
+</div>
+
+  </aside>
+
+
+  <!-- ==========================================
+       PÁGINA: INVENTÁRIO
+  =========================================== -->
+  <section class="inv" *ngIf="page === 'inventory'">
+
+    <div class="inv__bar">
+      <select class="inv__sort" (change)="setSort($any($event.target).value)">
+        <option value="new">Mais novos</option>
+        <option value="old">Mais antigos</option>
+      </select>
+    </div>
+
+    <div class="inv__grid">
+      <!-- caixas -->
+      <div class="inv-item" *ngFor="let c of cases" (click)="openCaseModal(c)">
+        <div class="inv-item__img inv-item__img--case" data-rarity="gold">
+          <img class="case-img" [src]="photoPath(c.image)" (error)="onImgError($event)" alt="" />
+        </div>
+        <div class="inv-item__title">{{ c.title }}</div>
+        <div class="inv-item__sub">{{ c.subtitle }}</div>
+      </div>
+
+      <div class="inv-item" *ngFor="let it of sortedItems" (click)="openItem(it)">
+        <div class="inv-item__img" [attr.data-rarity]="it.rarity">
+          <img [src]="photoPath(it.photo)" (error)="onImgError($event)" alt="" />
+        </div>
+        <div class="inv-item__title">{{ it.title }}</div>
+        <div class="inv-item__sub">{{ it.subtitle }}</div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ==========================================
+       PÁGINA: LOJA
+  =========================================== -->
+  <section class="shop" *ngIf="page === 'shop'">
+
+    <!-- abas (enfeite) -->
+    <div class="shop__tabs">
+      <span
+        *ngFor="let tab of shopTabs; let i = index"
+        class="shop__tab"
+        [class.on]="i === 0">{{ tab }}</span>
+    </div>
+
+    <div class="shop__content">
+
+      <!-- BLOCO 1: presentes (só dá para escolher um) -->
+      <div class="mimo">
+
+        <div class="mimo__gifts">
+          <div
+            class="gift"
+            *ngFor="let g of gifts; let i = index"
+            [class.gift--open]="giftChosen === null"
+            [class.gift--chosen]="giftChosen === i"
+            [class.gift--dim]="giftChosen !== null && giftChosen !== i"
+            (click)="chooseGift(i)">
+
+            <img class="gift__img" [src]="photoPath(g.image)" (error)="onImgError($event)" alt="" />
+            <div class="gift__ribbon" *ngIf="giftChosen === i">RESGATADO</div>
+            <div class="gift__name">{{ g.title }}</div>
+
+          </div>
+        </div>
+
+        <div class="mimo__info">
+          <div class="mimo__title">{{ giftTitle }}</div>
+          <div class="mimo__banner">{{ giftChosen === null ? giftRibbonPending : giftRibbonDone }}</div>
+          <p class="mimo__text">{{ giftChosen === null ? giftTextPending : giftTextDone }}</p>
+
+          <div class="mimo__progress">
+            <svg viewBox="0 0 24 24" class="mimo__rank">
+              <path d="M5 9l7-5 7 5"></path>
+              <path d="M5 14l7-5 7 5"></path>
+              <path d="M5 19l7-5 7 5"></path>
+            </svg>
+            <div class="mimo__bar"><div class="mimo__fill" [style.width.%]="giftProgress"></div></div>
+            <span class="mimo__end">♥</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- BLOCO 2: novidades e populares -->
+      <div class="popular">
+
+        <div class="popular__title">{{ shopSectionTitle }}</div>
+
+
+        <div class="popular__row">
+          <div class="pitem" *ngFor="let p of shopItems">
+
+            <div class="pitem__img">
+              <img [src]="photoPath(p.image)" (error)="onImgError($event)" alt="" />
+              <span class="pitem__new" *ngIf="p.isNew">NOVO!</span>
+              <span class="pitem__tag" *ngIf="p.tag">{{ p.tag }}</span>
+            </div>
+
+            <div class="pitem__name">{{ p.title }}</div>
+
+            <div class="pitem__foot">
+              <span class="pitem__price">{{ p.price }}</span>
+              <span class="pitem__info">i</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- BLOCO 3: banner -->
+
+
+    </div>
+
+  </section>
+
+  <!-- ==========================================
+       PÁGINA: NOTÍCIAS
+  =========================================== -->
+  <section class="news" *ngIf="page === 'news'">
+
+    <article
+      class="news-row"
+      *ngFor="let n of newsItems; let i = index"
+      [class.news-row--featured]="i === 0"
+      (click)="openNews(n)">
+
+      <div class="news-row__img">
+        <img [src]="photoPath(n.image)" (error)="onImgError($event)" alt="" />
+      </div>
+
+      <div class="news-row__body">
+        <div class="news-row__date">{{ n.date }}</div>
+        <h3 class="news-row__title">{{ n.title }}</h3>
+        <p class="news-row__text">{{ n.text }}</p>
+      </div>
+
+    </article>
+
+  </section>
+
+  <!-- notícia aberta (texto completo) -->
+  <div class="news-modal" *ngIf="selectedNews" (click)="closeNews()">
+    <div class="news-modal__panel" (click)="$event.stopPropagation()">
+      <button class="news-modal__close" (click)="closeNews()">✕</button>
+      <img [src]="photoPath(selectedNews.image)" (error)="onImgError($event)" alt="" />
+      <div class="news-row__date">{{ selectedNews.date }}</div>
+      <h3 class="news-modal__title">{{ selectedNews.title }}</h3>
+      <p class="news-modal__text">{{ selectedNews.text }}</p>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       PÁGINA: EQUIPAMENTO
+  =========================================== -->
+  <section class="equip" *ngIf="page === 'equipment'">
+
+    <div class="equip__top">
+
+      <!-- ===== LADO ESQUERDO (azul) ===== -->
+      <div class="team team--left">
+
+        <div class="team__pad"></div>
+
+        <!-- coluna de espaços: agente, luvas, faca, zeus, kit, moeda, spray -->
+        <div class="team__slots">
+          <div
+            class="eslot eslot--side"
+            *ngFor="let s of equipSlotsLeft"
+            [class.eslot--nobar]="s.noBar"
+            
+            [attr.data-rarity]="slotRarity(s, 'ct')"
+            (click)="onSideSlotClick(s, 'ct')">
+            <img *ngIf="slotImage(s, 'ct') as img" [src]="photoPath(img)" (error)="onImgError($event)" (load)="onImgLoad($event)" alt="" />
+          </div>
+        </div>
+
+        <!-- boneco dos Contra-Terroristas (animação em loop, sem fundo) -->
+      <div class="team__char">
+          <img class="team__anim" [src]="photoPath(equipAnimLeft)" (error)="onImgError($event)" alt="" />
+          <div class="team__label team__label--left">{{ equipTitleLeft }}</div>
+        </div>
+
+        <div class="fade-col">
+          <div class="fade-box" *ngFor="let n of [1, 2, 3, 4]"></div>
+        </div>
+
+        <!-- colunas de armas -->
+        <div class="wcols">
+          <div class="wcol" *ngFor="let col of equipColumns">
+            <ng-container *ngFor="let g of col.groups">
+
+              <div class="whead">
+                <svg viewBox="0 0 24 24"><path d="M3 4h18l-7 8v6l-4 2v-8z"></path></svg>
+                {{ g.title }}
+              </div>
+
+              <div class="wgroup" [style.flex]="g.slots.length">
+                <div
+                  class="eslot eslot--weapon"
+                  *ngFor="let s of g.slots"
+                  [attr.data-rarity]="s.rarity || 'gray'"
+                  (click)="openSlot(s)">
+                  <img *ngIf="s.image" [src]="photoPath(s.image)" (error)="onImgError($event)" alt="" />
+                </div>
+              </div>
+
+            </ng-container>
+          </div>
+        </div>
+
+        <div class="fade-col fade-col--b">
+          <div class="fade-box" *ngFor="let n of [1, 2, 3, 4, 5]"></div>
+        </div>
+
+      </div>
+
+      <!-- ===== LADO DIREITO (escuro) ===== -->
+      <div class="team team--right">
+
+        <!-- personagem (o 3D entra aqui depois) -->
+        <div class="team__char">
+          <img class="team__anim" [src]="photoPath(equipAnimRight)" (error)="onImgError($event)" alt="" />
+          <div class="team__label team__label--left">{{ equipTitleRight }}</div>
+        </div>
+
+        <!-- coluna de espaços: agente, luvas, faca, zeus, c4, kit, moeda, spray -->
+        <div class="team__slots">
+          <div
+            class="eslot eslot--side"
+            *ngFor="let s of equipSlotsRight"
+            [class.eslot--nobar]="s.noBar"
+           
+            [attr.data-rarity]="slotRarity(s, 't')"
+            (click)="onSideSlotClick(s, 't')">
+            <img *ngIf="slotImage(s, 't') as img" [src]="photoPath(img)" (error)="onImgError($event)" (load)="onImgLoad($event)" alt="" />
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ===== ITENS EMBAIXO ===== -->
+    <div class="equip__bottom">
+
+      <div class="equip__bar">
+        <div class="equip__filter">
+          <svg viewBox="0 0 24 24"><path d="M3 4h18l-7 8v6l-4 2v-8z"></path></svg>
+          <select class="inv__sort">
+            <option>Todos os itens</option>
+          </select>
+        </div>
+
+        <select class="inv__sort" (change)="setSort($any($event.target).value)">
+          <option value="new">Mais novos</option>
+          <option value="old">Mais antigos</option>
+        </select>
+      </div>
+
+      <div class="equip__grid">
+        <div class="inv-item" *ngFor="let it of sortedEquipItems" (click)="openItem(it)">
+          <div class="inv-item__img" [attr.data-rarity]="it.rarity">
+            <img [src]="photoPath(it.photo)" (error)="onImgError($event)" alt="" />
+          </div>
+          <div class="inv-item__title">{{ it.title }}</div>
+          <div class="inv-item__sub">{{ it.subtitle }}</div>
+        </div>
+
+        <!-- álbuns (kits de música): clique para equipar e ouvir um trecho.
+             Passe o mouse para equipar só do lado CT ou só do lado T. -->
+        <div class="inv-item kit" *ngFor="let k of sortedKits" (click)="equipKit(k)">
+          <div class="inv-item__img inv-item__img--kit" [attr.data-rarity]="k.rarity">
+            <img [src]="photoPath(k.cover)" (error)="onImgError($event)" (load)="onImgLoad($event)" alt="" />
+
+           
+ 
+
+            <span class="kit__eq" *ngIf="isKitPlaying(k)">♪</span>
+
+            <div class="kit__actions" (click)="$event.stopPropagation()">
+              <button type="button" (click)="equipKit(k, 'ct')">CT</button>
+              <button type="button" (click)="equipKit(k, 't')">T</button>
+            </div>
+          </div>
+          <div class="inv-item__title">{{ k.title }}</div>
+          <div class="inv-item__sub">{{ k.artist }}</div>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- foto aberta em tamanho grande -->
+  <div class="lightbox" *ngIf="selectedItem" (click)="closeItem()">
+    <img [src]="photoPath(selectedItem.photo)" alt="" />
+    <div class="lightbox__title">{{ selectedItem.title }}</div>
+  </div>
+
+  <!-- ==========================================
+       ABERTURA DE CAIXA
+  =========================================== -->
+  <div class="case-modal" *ngIf="openCase">
+    <div class="case-modal__panel">
+
+      <button class="case-modal__close" (click)="closeCase()">✕</button>
+
+      <div class="case-modal__title">{{ openCase.title }}</div>
+      <div class="case-modal__sub">Contém um destes itens</div>
+
+      <div class="reel" #reelView>
+        <div class="reel__marker"></div>
+        <div
+          class="reel__strip"
+          [style.transform]="'translateX(' + (-reelOffset) + 'px)'"
+          [style.transition]="reelTransition">
+          <div class="reel__card" *ngFor="let r of reelCards" [attr.data-rarity]="r.rarity">
+            <img class="reel__img" [src]="photoPath(reelImage)" (error)="onImgError($event)" alt="" />
+            <div class="reel__name">{{ r.title }}</div>
+          </div>
+        </div>
+      </div>
+
+      <button
+        class="case-modal__btn"
+        *ngIf="!wonReward"
+        [disabled]="reelSpinning"
+        (click)="startSpin()">
+        {{ reelSpinning ? 'ABRINDO...' : 'ABRIR CAIXA' }}
+      </button>
+
+      <div class="reward" *ngIf="wonReward" [attr.data-rarity]="wonReward.rarity">
+        <img
+          *ngIf="wonReward.photo"
+          [src]="photoPath(wonReward.photo)"
+          (error)="onImgError($event)"
+          alt="" />
+        <div class="reward__title">{{ wonReward.title }}</div>
+        <div class="reward__msg">{{ wonReward.message }}</div>
+        <div class="reward__actions">
+          <button (click)="openAgain()">ABRIR DE NOVO</button>
+          <button (click)="closeCase()">FECHAR</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ==========================================
+       PAINEL DE AMIGOS (direita)
+  =========================================== -->
+  <aside class="friends"
+       [class.collapsed]="!friendsOpen"
+       (mouseenter)="friendsOpen = true"
+       (mouseleave)="friendsOpen = false">
+
+    <!-- botão redondo para abrir (aparece só fechado) -->
+    <button class="friends__open">
+      <svg viewBox="0 0 24 24">
+        <path d="M4 7h10M18 7h2M4 17h2M10 17h10"></path>
+        <circle cx="16" cy="7" r="2"></circle>
+        <circle cx="8" cy="17" r="2"></circle>
+      </svg>
+    </button>
+
+    <!-- cabeçalho -->
+    <div class="friends__head">
+      <div class="friends__head-icon">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="8" r="4"></circle>
+          <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7z"></path>
+        </svg>
+        <small>{{ friends.length }}</small>
+      </div>
+      <span class="friends__title">Amigos</span>
+      <svg class="friends__add" viewBox="0 0 24 24">
+        <circle cx="9" cy="8" r="4"></circle>
+        <path d="M2 21c0-4 3-6.5 7-6.5s7 2.5 7 6.5z"></path>
+        <path d="M19 8v6M16 11h6" stroke-linecap="round"></path>
+      </svg>
+    </div>
+
+    <!-- lista -->
+    <div class="friends__list">
+      <div class="friend" *ngFor="let f of friends">
+        <div class="friend__avatar" [class.online]="f.online">
+          <img [src]="photoPath(f.avatar)" (error)="onImgError($event)" alt="" />
+        </div>
+        <div class="friend__info">
+          <div class="friend__name">{{ f.name }}</div>
+          <div class="friend__status">{{ f.status }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- rodapé -->
+    <div class="friends__footer">
+      <div class="friends__action">
+        <div class="friends__action-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="11" r="2"></circle>
+            <path d="M8 7a6 6 0 0 0 0 8M16 7a6 6 0 0 1 0 8M5 4a10 10 0 0 0 0 14M19 4a10 10 0 0 1 0 14M12 13v8"></path>
+          </svg>
+          <small>10</small>
+        </div>
+        <span>Quero jogar</span>
+      </div>
+
+      <div class="friends__action">
+        <div class="friends__action-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3 2"></path>
+          </svg>
+          <small>4</small>
+        </div>
+        <span>Aliados recentes</span>
+      </div>
+    </div>
+
+  </aside>
+
+
+  <!-- ==========================================
+       CONTEÚDO CENTRAL
+  =========================================== -->
+  <main class="center-wrap">
+
+
+
+
+    <!-- ======================================
+         PARTIDA ENCONTRADA
+    ======================================= -->
+    <ng-container
+      *ngIf="stage === 'found'">
+
+      <div class="found-card">
+
+        <h2>
+          {{ config.readyTitle }}
+        </h2>
+
+        <div class="subtitle">
+
+          <span class="ring">
+            💍
+          </span>
+
+          {{ config.mapLabel }}
+
+        </div>
+
+        <hr />
+
+        <p class="question">
+          {{ config.question }}
+        </p>
+
+        <button
+          class="accept-btn"
+          (click)="onAceitar()">
+
+          ACEITAR
+
+        </button>
+
+      </div>
+
+
+      <div class="info-box">
+        {{ config.infoText }}
+      </div>
+
+    </ng-container>
+
+
+  </main>
+
+<!-- FOTO FINAL EM TELA CHEIA -->
+<div class="photo-fullscreen" *ngIf="stage === 'thanks'">
+  <button
+    class="photo-fullscreen__close"
+    type="button"
+    aria-label="Fechar foto"
+    (click)="fecharFoto()">
+    &times;
+  </button>
+
+  <img
+    class="photo-fullscreen__image"
+    [src]="photoPath(config.finalPhoto)"
+    (error)="onImgError($event)"
+    alt="Nossa foto especial"
+  />
+</div>
+
+
+ 

@@ -1,0 +1,11 @@
+Coloque aqui as fotos de vocês dois.
+
+O app usa 5 fotos, em 3 "cartões" (igual a tela do CS2):
+  foto1.jpg  → cartão de cima (fixo)
+  foto2.jpg  → cartão de baixo (fixo)
+  foto3.jpg, foto4.jpg, foto5.jpg  → cartão do meio (roda sozinho, tipo carrossel)
+
+Pode usar quantas fotos quiser no carrossel do meio — só ajustar a lista
+"photos" no arquivo:
+  frontend/src/app/app.component.ts
+(procure pelo objeto CONFIG lá no topo do arquivo)

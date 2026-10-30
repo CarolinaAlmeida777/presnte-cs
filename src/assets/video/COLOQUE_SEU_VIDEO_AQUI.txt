@@ -1,0 +1,11 @@
+Coloque aqui o vídeo que vai tocar depois que ela clicar em ACEITAR.
+
+Nome esperado por padrão:
+  proposta.mp4
+
+Se quiser usar outro nome, edite "videoFile" no arquivo:
+  frontend/src/app/app.component.ts
+
+Dica: se o vídeo for grande (>50-100MB), pode demorar pra carregar
+em uma conexão de celular ruim. Se der, comprima antes (ex: HandBrake,
+ou exportar em 1080p a ~5-8 Mbps).
